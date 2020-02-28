@@ -33,7 +33,7 @@ public class PGClient {
     /**
      * 日志
      */
-    private static Logger logger = LoggerFactory.getLogger("fmdbmeta");
+    private static Logger logger = LoggerFactory.getLogger(PGClient.class);
     //pg的ip信息
     private String pg_ip;
     //pg的端口号信息

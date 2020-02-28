@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fiberhome.fmdb.common.Constant;
 import com.fiberhome.fmdb.common.JarLoader;
 import com.fiberhome.fmdb.manifest.bean.OrcInfo;
-import com.fiberhome.fmdb.meta.bean.ColumnInfo;
-import com.fiberhome.fmdb.meta.bean.IndexInfo;
-import com.fiberhome.fmdb.meta.bean.TableInfo;
-import com.fiberhome.fmdb.meta.bean.UDCTInfo;
+import com.fiberhome.fmdb.meta.bean.*;
 import com.fiberhome.fmdb.meta.conf.FMDBMetaConf;
 import com.fiberhome.fmdb.meta.tool.IFMDBMetaClient;
 import com.fiberhome.fmdb.statistic.ORCUtil;
@@ -243,6 +240,16 @@ public class PGFMDBMetaClient implements IFMDBMetaClient {
      */
     private void init() {
         pgClient = PGClient.getInstance(pg_ip, pg_port, pg_user, pg_psw, pg_dataBase);
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        List<Category> categories = Lists.newArrayList();
+        Category category1 = new Category(true,"INT");
+        Category category2 = new Category(false,"STRUCT");
+        categories.add(category1);
+        categories.add(category2);
+        return categories;
     }
 
     @Override

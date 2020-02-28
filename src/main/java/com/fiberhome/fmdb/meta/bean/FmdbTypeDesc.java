@@ -38,55 +38,57 @@ public class FmdbTypeDesc {
     }
     public FmdbTypeDesc(Category category) {
         this.category = category;
-        if (category.isPrimitive) {
+//        if (category.isPrimitive) {
+        if (category.isPrimitive()) {
             children = null;
         } else {
             children = new ArrayList<>();
         }
-        if (category == Category.STRUCT) {
+        if (category.getName().equalsIgnoreCase("STRUCT")) {
+//        if (category == Category.STRUCT) {
             fieldNames = new ArrayList<>();
         } else {
             fieldNames = null;
         }
     }
 
-    public enum Category {
-        BOOLEAN("boolean", true),
-        BYTE("tinyint", true),
-        SHORT("smallint", true),
-        INT("int", true),
-        LONG("bigint", true),
-        FLOAT("float", true),
-        DOUBLE("double", true),
-        STRING("string", true),
-        DATE("date", true),
-        TIMESTAMP("timestamp", true),
-        BINARY("binary", true),
-        DECIMAL("decimal", true),
-        VARCHAR("varchar", true),
-        CHAR("char", true),
-        LIST("array", false),
-        MAP("map", false),
-        STRUCT("struct", false),
-        UNION("uniontype", false),
-        TIMESTAMP_INSTANT("timestamp with local time zone", false);
-
-        Category(String name, boolean isPrimitive) {
-            this.name = name;
-            this.isPrimitive = isPrimitive;
-        }
-
-        final boolean isPrimitive;
-        final String name;
-
-        public boolean isPrimitive() {
-            return isPrimitive;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
+//    public enum Category {
+//        BOOLEAN("boolean", true),
+//        BYTE("tinyint", true),
+//        SHORT("smallint", true),
+//        INT("int", true),
+//        LONG("bigint", true),
+//        FLOAT("float", true),
+//        DOUBLE("double", true),
+//        STRING("string", true),
+//        DATE("date", true),
+//        TIMESTAMP("timestamp", true),
+//        BINARY("binary", true),
+//        DECIMAL("decimal", true),
+//        VARCHAR("varchar", true),
+//        CHAR("char", true),
+//        LIST("array", false),
+//        MAP("map", false),
+//        STRUCT("struct", false),
+//        UNION("uniontype", false),
+//        TIMESTAMP_INSTANT("timestamp with local time zone", false);
+//
+//        Category(String name, boolean isPrimitive) {
+//            this.name = name;
+//            this.isPrimitive = isPrimitive;
+//        }
+//
+//        final boolean isPrimitive;
+//        final String name;
+//
+//        public boolean isPrimitive() {
+//            return isPrimitive;
+//        }
+//
+//        public String getName() {
+//            return name;
+//        }
+//    }
 
     public static FmdbTypeDesc fromString(String typeName) {
         if (typeName == null) {
@@ -106,9 +108,11 @@ public class FmdbTypeDesc {
      * @return this
      */
     public FmdbTypeDesc withPrecision(int precision) {
-        if (category != Category.DECIMAL) {
+//        if (category != Category.DECIMAL) {
+        if (!category.getName().equalsIgnoreCase("DECIMAL")) {
             throw new IllegalArgumentException("precision is only allowed on decimal"+
-                    " and not " + category.name);
+//                    " and not " + category.name);
+                    " and not " + category.getName());
         } else if (precision < 1 || precision > MAX_PRECISION || scale > precision){
             throw new IllegalArgumentException("precision " + precision +
                     " is out of range 1 .. " + scale);
@@ -123,9 +127,11 @@ public class FmdbTypeDesc {
      * @return this
      */
     public FmdbTypeDesc withScale(int scale) {
-        if (category != FmdbTypeDesc.Category.DECIMAL) {
+//        if (category != FmdbTypeDesc.Category.DECIMAL) {
+        if (!category .getName().equalsIgnoreCase("DECIMAL")) {
             throw new IllegalArgumentException("scale is only allowed on decimal"+
-                    " and not " + category.name);
+//                    " and not " + category.name);
+                    " and not " + category.getName());
         } else if (scale < 0 || scale > MAX_SCALE || scale > precision) {
             throw new IllegalArgumentException("scale is out of range at " + scale);
         }
@@ -147,7 +153,8 @@ public class FmdbTypeDesc {
      * @return the union type.
      */
     public FmdbTypeDesc addUnionChild(FmdbTypeDesc child) {
-        if (category != Category.UNION) {
+//        if (category != Category.UNION) {
+        if (!category.getName().equalsIgnoreCase("UNION") ) {
             throw new IllegalArgumentException("Can only add types to union type" +
                     " and not " + category);
         }
@@ -162,7 +169,8 @@ public class FmdbTypeDesc {
      * @return the struct type
      */
     public FmdbTypeDesc addField(String field, FmdbTypeDesc fieldType) {
-        if (category != Category.STRUCT) {
+//        if (category != Category.STRUCT) {
+        if (!category.getName().equalsIgnoreCase("STRUCT")) {
             throw new IllegalArgumentException("Can only add fields to struct type" +
                     " and not " + category);
         }
@@ -177,9 +185,11 @@ public class FmdbTypeDesc {
      * @return this
      */
     public FmdbTypeDesc withMaxLength(int maxLength) {
-        if (category != Category.VARCHAR && category != Category.CHAR) {
+//        if (category != Category.VARCHAR && category != Category.CHAR) {
+        if (!category.getName().equalsIgnoreCase("VARCHAR") && !category.getName().equalsIgnoreCase("CHAR")) {
             throw new IllegalArgumentException("maxLength is only allowed on char" +
-                    " and varchar and not " + category.name);
+//                    " and varchar and not " + category.name);
+                    " and varchar and not " + category.getName());
         }
         this.maxLength = maxLength;
         return this;
@@ -190,17 +200,22 @@ public class FmdbTypeDesc {
      * @param child the child to add
      */
     public void addChild(FmdbTypeDesc child) {
-        switch (category) {
-            case LIST:
+//        switch (category) {
+        switch (category.getName().toUpperCase()) {
+//            case LIST:
+            case "LIST":
                 if (children.size() >= 1) {
                     throw new IllegalArgumentException("Can't add more children to list");
                 }
-            case MAP:
+//            case MAP:
+            case "MAP":
                 if (children.size() >= 2) {
                     throw new IllegalArgumentException("Can't add more children to map");
                 }
-            case UNION:
-            case STRUCT:
+//            case UNION:
+//            case STRUCT:
+            case "UNION":
+            case "STRUCT":
                 children.add(child);
                 child.parent = this;
                 break;
@@ -216,10 +231,11 @@ public class FmdbTypeDesc {
         return buffer.toString();
     }
     public void printToBuffer(StringBuilder buffer) {
-        String s = category.name.toString();
+//        String s = category.name.toString();
+        String s = category.toString();
 //    buffer.append(category.name);
         buffer.append(s);
-        String categoryS=category.toString();
+        String categoryS=category.toString().toUpperCase();
 
         Map<String, String> hashMap = UndentifyBase.getInstance().getHashMap();
 

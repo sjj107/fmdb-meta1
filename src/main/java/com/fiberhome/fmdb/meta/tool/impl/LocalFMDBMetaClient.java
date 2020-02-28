@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.fiberhome.fmdb.common.Constant;
 import com.fiberhome.fmdb.manifest.bean.ManifestInfo;
 import com.fiberhome.fmdb.manifest.bean.OrcInfo;
-import com.fiberhome.fmdb.meta.bean.ColumnInfo;
-import com.fiberhome.fmdb.meta.bean.IndexInfo;
-import com.fiberhome.fmdb.meta.bean.TableInfo;
-import com.fiberhome.fmdb.meta.bean.UDCTInfo;
+import com.fiberhome.fmdb.meta.bean.*;
 import com.fiberhome.fmdb.meta.tool.IFMDBMetaClient;
 import com.fiberhome.fmdb.statistic.ORCUtil;
 import com.google.common.collect.Lists;
@@ -79,6 +76,11 @@ public class LocalFMDBMetaClient implements IFMDBMetaClient {
     private void initConf() {
         //初始化json文件的存放位置信息
 //        this.jsonDir = FMDBMetaConf.getInstance().jsonDir;
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        return null;
     }
 
     @Override

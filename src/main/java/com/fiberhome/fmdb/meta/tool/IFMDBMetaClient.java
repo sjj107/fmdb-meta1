@@ -1,9 +1,11 @@
 package com.fiberhome.fmdb.meta.tool;
 
 import com.fiberhome.fmdb.manifest.bean.OrcInfo;
+import com.fiberhome.fmdb.meta.bean.Category;
 import com.fiberhome.fmdb.meta.bean.IndexInfo;
 import com.fiberhome.fmdb.meta.bean.TableInfo;
 import com.fiberhome.fmdb.meta.bean.UDCTInfo;
+import com.google.common.collect.Lists;
 import org.apache.hadoop.conf.Configuration;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.Set;
  */
 public interface IFMDBMetaClient {
 
+    List<Category> getCategories();
     /**
      * 创建自定义数据类型
      *

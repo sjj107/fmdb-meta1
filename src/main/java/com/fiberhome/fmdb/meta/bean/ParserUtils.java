@@ -1,12 +1,14 @@
 package com.fiberhome.fmdb.meta.bean;
 
+import com.fiberhome.fmdb.meta.factory.FmdbMetaFactory;
+
 /**
  * @Description TODO
  * @Author sjj
  * @Date 2020/2/28 21:22
  */
 public class ParserUtils {
-    static FmdbTypeDesc.Category parseCategory(ParserUtils.StringPosition source) {
+    static Category parseCategory(ParserUtils.StringPosition source) {
         StringBuilder word = new StringBuilder();
         boolean hadSpace = true;
         while (source.position < source.length) {
@@ -30,9 +32,10 @@ public class ParserUtils {
             catString = catString.trim();
         }
         if (!catString.isEmpty() /*&& !"struct".equals(catString)*/ ) {
-
-            for (FmdbTypeDesc.Category cat : FmdbTypeDesc.Category.values()) {
-                if (cat.getName().equals(catString)) {
+//                for (FmdbTypeDesc.Category cat : FmdbTypeDesc.Category.values()) {
+            for (Category cat : FmdbMetaFactory.INSTANCE.getMetaClient().getCategories()) {
+//                if (cat.getName().equals(catString)) {
+                if (cat.getName().equalsIgnoreCase(catString)) {
                     return cat;
                 }
             }
@@ -82,7 +85,7 @@ public class ParserUtils {
 //    System.out.println("result "+result+"--------------");
         boolean flag=false;
         String category = result.getCategory().toString();
-        switch (category) {
+        switch (category.toUpperCase()) {
             case "BINARY":
             case "BOOLEAN":
             case "BYTE":
@@ -135,7 +138,8 @@ public class ParserUtils {
                 parseStruct(result, source);
                 break;
             default:
-                for (FmdbTypeDesc.Category cat : FmdbTypeDesc.Category.values()) {
+//                for (FmdbTypeDesc.Category cat : FmdbTypeDesc.Category.values()) {
+                for (Category cat : FmdbMetaFactory.INSTANCE.getMetaClient().getCategories()) {
                     if (cat.getName().equalsIgnoreCase(category)) {
                         flag=true;
                         //    break;

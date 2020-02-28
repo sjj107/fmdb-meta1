@@ -31,9 +31,9 @@ public class MetaClientTest {
 //        getUDCT("MAC");PGClient
 //        deleteUDCT();
 //            getAllUDCT();
-        listDb();
+//        listDb();
 //        checkData("fhorc", "fmdb_data_type_test_notnull",new String[]{"127","2","3","4","5","6","7","true","999","1010101010101"});
-//        storageUDCTTableTest("fhorc", "localtest");
+        storageUDCTTableTest("fhorc", "localtest");
 //        storageBaseTableTest("fhorc", "localtest");
 //        getTableInfo("fhorc", "localtest");
 //        deleteTable("fhorc", "localtest");
@@ -292,49 +292,26 @@ public class MetaClientTest {
         //字段信息
         List<ColumnInfo> cols = new ArrayList<>();
         ColumnInfo columnInfo1 = new ColumnInfo();
-        columnInfo1.setColName("carnum");
+        columnInfo1.setColName("f1");
         columnInfo1.setColIndex(0);
-        columnInfo1.setColType("long");
+        columnInfo1.setColType("struct<f11:int,f12:mac>");
         columnInfo1.setNull(false);
 
         ColumnInfo columnInfo2 = new ColumnInfo();
-        columnInfo2.setColName("email");
+        columnInfo2.setColName("f2");
         columnInfo2.setColIndex(1);
         columnInfo2.setColType("string");
-
-        ColumnInfo columnInfo3 = new ColumnInfo();
-        columnInfo3.setColName("idcard");
-        columnInfo3.setColIndex(2);
-        columnInfo3.setColType("long");
-
-        ColumnInfo columnInfo4 = new ColumnInfo();
-        columnInfo4.setColName("ip");
-        columnInfo4.setColIndex(3);
-        columnInfo4.setColType("long");
-
-        ColumnInfo columnInfo5 = new ColumnInfo();
-        columnInfo5.setColName("mac");
-        columnInfo5.setColIndex(4);
-        columnInfo5.setColType("long");
-
-        ColumnInfo columnInfo6 = new ColumnInfo();
-        columnInfo6.setColName("telephone");
-        columnInfo6.setColIndex(5);
-        columnInfo6.setColType("long");
 
 
         cols.add(columnInfo1);
         cols.add(columnInfo2);
-        cols.add(columnInfo3);
-        cols.add(columnInfo4);
-        cols.add(columnInfo5);
-        cols.add(columnInfo6);
+
         Map<String, String> tablePro = new HashMap<>();
 //        tablePro.put(Constant.PARTITION_NAME, "CATURE_TIME");
 //        tablePro.put(Constant.PARTITION_TYPE, PartitionType.DAY.toString());
 //        tablePro.put(Constant.TTL, "-1");
         tablePro.put(Constant.COMPRESSTYPE, "ZLIB");
-        tablePro.put(Constant.SORT_FIELDS, "telephone");
+        tablePro.put(Constant.SORT_FIELDS, "f1");
         tablePro.put(Constant.SORT_TYPE, "desc");
 //        tablePro.put(Constant.ORC_SIZE, "1024");
         TableInfo tableInfo = new TableInfo(dbName, tableName, cols, Lists.newArrayList("ID"));
