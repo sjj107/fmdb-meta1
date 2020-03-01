@@ -55,14 +55,14 @@ public enum CommonUtil {
      * @return orc支持的struct
      */
     private String getColStruct(ColumnInfo columnInfo) {
-        switch (columnInfo.getColType().toLowerCase()) {
+        switch (columnInfo.getColType().toString().toLowerCase()) {
             case "decimal":
                 return columnInfo.getColType() + Constant.LEFT_BRACKET + columnInfo.getPrecision() + Constant.COMMA + columnInfo.getScale() + Constant.RIGHT_BRACKET;
             case "char":
             case "varchar":
                 return columnInfo.getColType() + Constant.LEFT_BRACKET + columnInfo.getPrecision() + Constant.RIGHT_BRACKET;
             default:
-                return columnInfo.getColType();
+                return columnInfo.getColType().toString();
         }
 //        switch (columnInfo.getBaseType()) {
 //            case BOOLEAN:
@@ -266,7 +266,7 @@ public enum CommonUtil {
         String colType;
         for (int index = 0; index < datas.length; index++) {
             columnInfo = tableInfo.getColumnInfo(index);
-            colType = columnInfo.getColType();
+            colType = columnInfo.getColType().toString();
             if (datas[index] == null) {
                 if (!columnInfo.isNull()) {
                     msg.setSuccess(false);
@@ -516,7 +516,7 @@ public enum CommonUtil {
                     msg.setFalseInfo(String.format("第[%d]个字段长度错误,要求长度为[%d],实际长度为[%d]", index, columnInfo.getPrecision(), buffer.length));
                     return msg;
                 }
-                if (columnInfo.getColType().equalsIgnoreCase(Constant.TEL) && !Pattern.matches(Constant.TEL_PATTERN, datas[index])) {
+                if (columnInfo.getColType().toString().equalsIgnoreCase(Constant.TEL) && !Pattern.matches(Constant.TEL_PATTERN, datas[index])) {
                     row = vectorizedRowBatch.size--;
                     msg.setSuccess(false);
                     msg.setFalseInfo(String.format("第[%d]个字段格式错误,数据类型要求为[%s]", index, columnInfo.getColType()));

@@ -306,12 +306,12 @@ public class PGClient {
             String baseType;//实际的字段类型
             for (ColumnInfo col : cols) {
                 colID = CommonUtil.INSTANCE.genID();
-                String colType = col.getColType();
-                baseType = getBaseType(col.getColType().toLowerCase());
-                if (baseType == null) {
-                    logger.error("[{}]-[{}]-[{}]基础类型为null", dbName, tableName, col.getColName());
-                    return false;
-                }
+                String colType = col.getColType().toString();
+//                baseType = getBaseType(col.getColType().toLowerCase());
+//                if (baseType == null) {
+//                    logger.error("[{}]-[{}]-[{}]基础类型为null", dbName, tableName, col.getColName());
+//                    return false;
+//                }
 //                FmdbDataType colType = col.getColType();
 //                //如果是自定义类型，需要通过属性获取实际的字段类型
 //                if (colType == FmdbDataType.UDCT) {
@@ -326,14 +326,14 @@ public class PGClient {
                 pstmt.setString(1, colID);
                 pstmt.setString(2, col.getComment());
                 pstmt.setString(3, col.getColName());
-                pstmt.setString(4, col.getColType());
+                pstmt.setString(4, col.getColType().toString());
                 pstmt.setInt(5, col.getColIndex());
                 pstmt.setBoolean(6, col.isNull());
                 pstmt.setInt(7, col.getPrecision());
                 pstmt.setInt(8, col.getScale());
                 pstmt.setString(9, tableID);
                 pstmt.setString(10, "storage");
-                pstmt.setString(11, baseType);
+                pstmt.setString(11, "basetype");
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
@@ -444,7 +444,7 @@ public class PGClient {
                 pstmt.setString(1, colID);
                 pstmt.setString(2, oriColumnInfo.getComment());
                 pstmt.setString(3, oriColumnInfo.getColName());
-                pstmt.setString(4, oriColumnInfo.getColType());
+                pstmt.setString(4, oriColumnInfo.getColType().toString());
                 pstmt.setInt(5, index);
                 pstmt.setBoolean(6, oriColumnInfo.isNull());
                 pstmt.setInt(7, oriColumnInfo.getPrecision());
@@ -466,7 +466,7 @@ public class PGClient {
                 pstmt.setString(1, colID);
                 pstmt.setString(2, oriColumnInfo.getComment());
                 pstmt.setString(3, oriColumnInfo.getColName());
-                pstmt.setString(4, oriColumnInfo.getColType());
+                pstmt.setString(4, oriColumnInfo.getColType().toString());
                 pstmt.setInt(5, index);
                 pstmt.setBoolean(6, oriColumnInfo.isNull());
                 pstmt.setInt(7, oriColumnInfo.getPrecision());
@@ -709,15 +709,15 @@ public class PGClient {
                 tmpCol = new ColumnInfo();
                 tmpCol.setComment(resultSet.getString(1));
                 tmpCol.setColName(resultSet.getString(2));
-                String baseType = getBaseType(resultSet.getString(3));
-                if (baseType == null) {
-                    logger.error("[{}]获取基础类型失败", resultSet.getString(3));
-                    return null;
-                }
+//                String baseType = getBaseType(resultSet.getString(3));
+//                if (baseType == null) {
+//                    logger.error("[{}]获取基础类型失败", resultSet.getString(3));
+//                    return null;
+//                }
 //                colProperties.put(Constant.UDCT_KEY, resultSet.getString(3));
 //                tmpCol.setProperties(colProperties);
                 tmpCol.setColType(resultSet.getString(3));
-                tmpCol.setBaseType(FmdbDataType.valueOf(baseType.toUpperCase()));
+                tmpCol.setBaseType(FmdbDataType.valueOf("string".toUpperCase()));
                 tmpCol.setColIndex(resultSet.getInt(4));
                 tmpCol.setNull(resultSet.getBoolean(5));
                 tmpCol.setPrecision(resultSet.getInt(6));

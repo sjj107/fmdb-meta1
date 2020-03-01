@@ -15,7 +15,7 @@ public class ColumnInfo implements Serializable {
     //字段名
     private String colName;
     //字段类型
-    private String colType;
+    private FmdbTypeDesc colType;
     //基础类型
     private FmdbDataType baseType;
     //字段顺序
@@ -43,7 +43,7 @@ public class ColumnInfo implements Serializable {
      */
     public ColumnInfo(String colName, String colType, int colIndex) {
         this.colName = colName;
-        this.colType = colType.toLowerCase();
+        this.colType = FmdbTypeDesc.fromString(colType.toLowerCase());
         this.colIndex = colIndex;
 //        this.properties = properties;
 //        if (colType == FmdbDataType.UDCT) {
@@ -69,12 +69,12 @@ public class ColumnInfo implements Serializable {
         this.colName = colName;
     }
 
-    public String getColType() {
+    public FmdbTypeDesc getColType() {
         return colType;
     }
 
     public void setColType(String colType) {
-        this.colType = colType.toLowerCase();
+        this.colType = FmdbTypeDesc.fromString(colType.toLowerCase());
     }
 
     public FmdbDataType getBaseType() {
@@ -106,9 +106,9 @@ public class ColumnInfo implements Serializable {
     }
 
     public void setPrecision(int precision) throws Exception {
-        if (colType.equalsIgnoreCase("char") && precision > 256) {
-            throw new Exception("the precision of char need less than or equal 256");
-        }
+//        if (colType.equalsIgnoreCase("char") && precision > 256) {
+//            throw new Exception("the precision of char need less than or equal 256");
+//        }
         this.precision = precision;
     }
 

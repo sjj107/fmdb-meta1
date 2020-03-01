@@ -23,19 +23,21 @@ public class MetaClientTest {
 //        LoadConfFile.loadLog4j("conf/log4j.properties");
         logger.info("start...");
         metaClient = FmdbMetaFactory.INSTANCE.getMetaClient();
+        metaClient = FmdbMetaFactory.INSTANCE.getMetaClient();
 //        metaClient = FmdbMetaFactory.INSTANCE.getMetaClient();
+//        listDb();
 //        storageDB("fhorc");
 //        deleteDB("fhorc");
+//        storageUDCTTableTest("fhorc", "localtest");
+        getTableInfo("fhorc", "localtest");
 //       createUDCT();
 //       getorcconf();
 //        getUDCT("MAC");PGClient
 //        deleteUDCT();
 //            getAllUDCT();
-//        listDb();
 //        checkData("fhorc", "fmdb_data_type_test_notnull",new String[]{"127","2","3","4","5","6","7","true","999","1010101010101"});
-        storageUDCTTableTest("fhorc", "localtest");
 //        storageBaseTableTest("fhorc", "localtest");
-//        getTableInfo("fhorc", "localtest");
+
 //        deleteTable("fhorc", "localtest");
 //        truncateTable("fhorc", "localtest");
 //        getUDCTConfJson();
@@ -197,7 +199,7 @@ public class MetaClientTest {
         System.out.println("字段信息：");
         for (ColumnInfo columnInfo : cols) {
             String colName = columnInfo.getColName();
-            String colType = columnInfo.getColType();
+            String colType = columnInfo.getColType().toString();
             int colIndex = columnInfo.getColIndex();
             FmdbDataType base_type = columnInfo.getBaseType();
 //            String s = columnInfo.getProperties().get(Constant.UDCT_KEY);
@@ -294,24 +296,17 @@ public class MetaClientTest {
         ColumnInfo columnInfo1 = new ColumnInfo();
         columnInfo1.setColName("f1");
         columnInfo1.setColIndex(0);
-        columnInfo1.setColType("struct<f11:int,f12:mac>");
+        columnInfo1.setColType("struct<f11:int,f12:int>");
         columnInfo1.setNull(false);
 
-        ColumnInfo columnInfo2 = new ColumnInfo();
-        columnInfo2.setColName("f2");
-        columnInfo2.setColIndex(1);
-        columnInfo2.setColType("string");
-
-
         cols.add(columnInfo1);
-        cols.add(columnInfo2);
 
         Map<String, String> tablePro = new HashMap<>();
 //        tablePro.put(Constant.PARTITION_NAME, "CATURE_TIME");
 //        tablePro.put(Constant.PARTITION_TYPE, PartitionType.DAY.toString());
 //        tablePro.put(Constant.TTL, "-1");
         tablePro.put(Constant.COMPRESSTYPE, "ZLIB");
-        tablePro.put(Constant.SORT_FIELDS, "f1");
+        tablePro.put(Constant.SORT_FIELDS, "f1.f2");
         tablePro.put(Constant.SORT_TYPE, "desc");
 //        tablePro.put(Constant.ORC_SIZE, "1024");
         TableInfo tableInfo = new TableInfo(dbName, tableName, cols, Lists.newArrayList("ID"));
@@ -326,7 +321,7 @@ public class MetaClientTest {
         metaClient.deleteTable(dbName, tableName);
     }
 
-    private static void  getorcconf(){
+    private static void getorcconf() {
         System.out.println("get");
         metaClient.getOrcConfiguration();
     }

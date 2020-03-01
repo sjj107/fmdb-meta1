@@ -17,7 +17,7 @@ public enum FmdbMetaFactory {
     INSTANCE;
     private static Logger logger = LoggerFactory.getLogger("fmdbmeta");
 
-    private  static IFMDBMetaClient pgfmdbmetaclient= new PGFMDBMetaClient();
+    private static IFMDBMetaClient metaClient;
 
 
     /**
@@ -26,12 +26,18 @@ public enum FmdbMetaFactory {
      * @return 元数据客户端
      */
     public IFMDBMetaClient getMetaClient() {
-        if (StringUtils.isEmpty(FMDBMetaConf.getInstance().metaLocation)) {
-            logger.debug("配置文件未设置FMDB元数据的存放位置，默认存在本地");
-            return new LocalFMDBMetaClient();
+        if (metaClient == null) {
+//            if (StringUtils.isEmpty(FMDBMetaConf.getInstance().metaLocation)) {
+//                logger.debug("配置文件未设置FMDB元数据的存放位置，默认存在本地");
+//                return new PGFMDBMetaClient();
+//            }
+//            MetaStorageLocation location = MetaStorageLocation.valueOf(FMDBMetaConf.getInstance().metaLocation.toUpperCase());
+//            return getMetaClient(location);
+            metaClient = new PGFMDBMetaClient();
+            return metaClient;
+        } else {
+            return metaClient;
         }
-        MetaStorageLocation location = MetaStorageLocation.valueOf(FMDBMetaConf.getInstance().metaLocation.toUpperCase());
-        return getMetaClient(location);
     }
 
     public IFMDBMetaClient getMetaClient(MetaStorageLocation location) {
@@ -41,10 +47,11 @@ public enum FmdbMetaFactory {
 //                return new LocalFMDBMetaClient();
             case PG:
                 logger.debug("FMDB元数据存放在PG");
-                return  pgfmdbmetaclient;
+                metaClient = new PGFMDBMetaClient();
+                return metaClient;
             default:
                 return null;
         }
-    }
 
+    }
 }

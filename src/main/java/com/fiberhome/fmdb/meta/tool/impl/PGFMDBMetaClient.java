@@ -100,7 +100,7 @@ public class PGFMDBMetaClient implements IFMDBMetaClient {
         this.pg_user = pg_user;
         this.pg_psw = pg_psw;
         init();
-        initCache();
+//        initCache();
         initZK();
         loadUDCT();
         //loadJars();
@@ -111,7 +111,7 @@ public class PGFMDBMetaClient implements IFMDBMetaClient {
     public PGFMDBMetaClient() {
         initConf();
         init();
-        initCache();
+//        initCache();
         initZK();
         loadUDCT();
         //loadJars();
