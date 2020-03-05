@@ -12,7 +12,7 @@
         <min.hadoop.version>2.7.4</min.hadoop.version>
 
         <storage-api.version>2.6.0</storage-api.version>
-        <zookeeper.version>3.4.6</zookeeper.version>
+        <zookeeper.version>3.4.14</zookeeper.version>
         <logback.version>1.0.13</logback.version>
     </properties>
 
