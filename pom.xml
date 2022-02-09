@@ -9,7 +9,7 @@
     <version>0.1.0</version>
 
     <properties>
-        <min.hadoop.version>2.7.4</min.hadoop.version>
+        <min.hadoop.version>2.10.1</min.hadoop.version>
 
         <storage-api.version>2.6.0</storage-api.version>
         <zookeeper.version>3.4.6</zookeeper.version>
